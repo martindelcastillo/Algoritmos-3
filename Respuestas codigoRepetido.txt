@@ -1,0 +1,14 @@
+## Abstracción de los tests 01 y 02 
+
+Creamos un cronómetro mediante un método que toma el tiempo de ejecución de un bloque. devolviendo así la diferencia entre el tiempo inicial hasta el tiempo que tarda en ejecutar este bloque, finalmente, dependiendo del test, este resultado va a ser comparado para ver si es menor a 50 o 100 milisegundos.
+
+
+## Cómo representar en Smalltalk
+
+La realidad la podemos representar mediante objetos, colaboradores, clases, métodos (cómo el cronómetro usado en los test 1 y 2) e instancias (estos últimos siendo objetos particulares, por ejemplo, sería el auto estacionado en la vereda, no la idea general de auto).
+
+
+## Teoría de Naur
+
+Al poseer la teoría y un código con bastantes abstracciones, lo que podemos conseguir es en un futuro aplicar modificaciones o adiciones de manera más sencilla utilizando estas herramientas ya que una buena abstracción genera que solo tengamos que cambiar esta para generar un cambio, caso contrario con mucho código repetido, habría que cambiar cada instancia.
+sin embargo, tampoco habría que hacer abstracciones excesivas ya que hacer estas lleva tiempo, dinero y además son herramientas que podrían ser utilizadas o no, dependiendo completamente de los eventos del futuro (la empresa se fundió, cambio de lenguaje, programa muerto o cualquier tipo de evento futuro que perjudique al programa).
