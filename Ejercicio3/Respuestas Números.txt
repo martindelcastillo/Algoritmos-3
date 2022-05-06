@@ -1,0 +1,12 @@
+### Aporte de los mensajes de DD
+El primer llamado nos sirve para obtener información acerca del primer objeto (por ejemplo en este caso, saber si es un entero o no) y el segundo llamado nos da información acerca del objeto que recibe un mensaje del primero, obteniendo la información del objeto que recibe este mensaje. (Al principio no sabemos nada, después sabemos que por ejemplo, un entero quiere sumarse con otro objeto, y en el segundo llamado sabemos que el entero quiere sumarse con, por ejemplo, otro entero).
+### Lógica de instanciado
+Nos parece que la lógica de cómo instanciar un objeto debería ser propia de ese objeto porque al momento de crear un nuevo objeto no hay que editar la superclase y además, estas superclases deberían tener los mensajes más genéricos para poder ser usados por sus subclases, en este ejemplo específico, tener with:over: en número sería una función que entero no debería saber responder. Si este se crea desde diferentes lugares o formas, el mismo objeto debería saber responder a estos problemas.
+### Nombres de las categorías de métodos
+Agrupamos los mensajes cuando estos tienen funciones abstractas similares, es decir, que hacen cosas similares; Por ejemplo, tanto la suma como la multiplicación hace que diferentes números interactúen de cierta forma, mientras que isOne e isZero verifican si el valor del objeto es uno en particular.
+Por otro lado, también los separamos por públicos o privados, en caso de que no queramos que el usuario los utilice directamente y solo sean usados por otros métodos del objeto.
+### Subclass Responsibility
+Este mensaje sirve para, principalmente que al momento de crear una nueva subclase, el programador sepa que hay que implementar este mensaje en la nueva subclase, ya que le pasa la responsabilidad de implementar dicho mensaje.
+También funciona a la hora de debuggear por este mismo motivo, si nos olvidamos de implementar este mensaje en una nueva subclase, al intentar ejecutar algo que utilice este mensaje sin implementar, el debugger nos va a avisar que tendríamos que implementar el mensaje en nuestra subclase.
+### No rompas
+Esta mal porque principalmente, podría generar errores inesperados, utilizando mensajes podemos ponerle un límite y evitar errores inesperados, además que los objetos solo deberían poder ser modificados por sus mensajes y no de forma arbitraria por el usuario/programador.
