@@ -194,13 +194,13 @@ TestCase subclass: #SentenceFinderByPrefixTest
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'MdC 5/13/2022 17:26:54'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'JM 5/16/2022 18:08:15'!
 test01PrefixWintReturnsStackOfSize1
 
 	| stack sentenceFinderByPrefix stackWithPrefix |
 	
 	sentenceFinderByPrefix := SentenceFinderByPrefix new.
-	stack := self prepararStack .
+	stack := self prepareStack .
 	
 	stackWithPrefix := sentenceFinderByPrefix find: 'Wint' inAStack: stack.
 		
@@ -218,45 +218,45 @@ test02StackIsEmptyReturnsEmptyStack
 		
 	self assert: stackWithPrefix isEmpty.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'MdC 5/13/2022 17:27:15'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'JM 5/16/2022 18:08:15'!
 test03PrefixNotInStackReturnsEmptyStack
 
 	| stack sentenceFinderByPrefix stackWithPrefix |
 	
 	sentenceFinderByPrefix := SentenceFinderByPrefix new.
-	stack := self prepararStack.
+	stack := self prepareStack.
 	
 	stackWithPrefix := sentenceFinderByPrefix find: 'zzz' inAStack: stack.
 		
 	self assert: stackWithPrefix isEmpty.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'MdC 5/13/2022 17:27:23'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'JM 5/16/2022 18:08:15'!
 test04StackStaysWithSameSize
 
 	| stack sentenceFinderByPrefix stackWithPrefix |
 	
 	sentenceFinderByPrefix := SentenceFinderByPrefix new.
-	stack := self prepararStack.
+	stack := self prepareStack.
 	
 	stackWithPrefix := sentenceFinderByPrefix find: 'Wint' inAStack: stack.
 		
 	self assert: stack size equals: 4.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'MdC 5/13/2022 17:27:32'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'JM 5/16/2022 18:08:15'!
 test05TopOfTheStackStaysInOrder
 
 	| stack sentenceFinderByPrefix stackWithPrefix |
 	
 	sentenceFinderByPrefix := SentenceFinderByPrefix new.
-	stack := self prepararStack.
+	stack := self prepareStack.
 	
 	stackWithPrefix := sentenceFinderByPrefix find: 'Win' inAStack: stack.
 		
 	self assert: stack top equals: 'Winter is here'.! !
 
 
-!SentenceFinderByPrefixTest methodsFor: 'setup' stamp: 'MdC 5/13/2022 16:19:16'!
-prepararStack
+!SentenceFinderByPrefixTest methodsFor: 'setup' stamp: 'JM 5/16/2022 18:08:15'!
+prepareStack
 
 	| stack |
 	
@@ -415,19 +415,19 @@ esteTamanioSirve: aSize conLimite: aSizeLimit
 
 !classDefinition: #OOStack category: 'Stack-Exercise'!
 Object subclass: #OOStack
-	instanceVariableNames: 'stack estado tamanioLimite'
+	instanceVariableNames: 'stack estado sizeLimit'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!OOStack methodsFor: 'initialization' stamp: 'MdC 5/13/2022 16:51:30'!
+!OOStack methodsFor: 'initialization' stamp: 'JM 5/16/2022 18:09:25'!
 initialize
 
 	stack := OrderedCollection new.
 	
 	estado := Vacio new.
 	
-	self tamanioLimite: infinity.! !
+	self sizeLimit: infinity.! !
 
 
 !OOStack methodsFor: 'accessing' stamp: 'MdC 5/11/2022 21:47:24'!
@@ -441,18 +441,18 @@ top
 	^estado top: self.! !
 
 
-!OOStack methodsFor: 'adding' stamp: 'MdC 5/16/2022 13:49:16'!
+!OOStack methodsFor: 'adding' stamp: 'JM 5/16/2022 18:12:28'!
 push: AnObject
 	
 	estado push: AnObject in: self.
 	
-	self verificarEstado.! !
+	self verifyEstado.! !
 
 
-!OOStack methodsFor: 'removing' stamp: 'MdC 5/16/2022 13:49:09'!
+!OOStack methodsFor: 'removing' stamp: 'JM 5/16/2022 18:12:28'!
 pop
 
-	self verificarEstado.
+	self verifyEstado.
 	
 	^estado pop: self.! !
 
@@ -463,15 +463,15 @@ isEmpty
 	^stack size = 0.! !
 
 
-!OOStack methodsFor: 'private' stamp: 'MdC 5/13/2022 16:51:46'!
-tamanioLimite: aSizeLimit
+!OOStack methodsFor: 'private' stamp: 'JM 5/16/2022 18:10:34'!
+sizeLimit: aSizeLimit
 
-	tamanioLimite := aSizeLimit.! !
+	sizeLimit := aSizeLimit.! !
 
-!OOStack methodsFor: 'private' stamp: 'MdC 5/13/2022 16:46:21'!
-verificarEstado
+!OOStack methodsFor: 'private' stamp: 'JM 5/16/2022 18:12:28'!
+verifyEstado
 
-	estado  := (Estado subclasses detect: [:aSubclass | aSubclass esteTamanioSirve: (self size) conLimite: tamanioLimite ]) new.! !
+	estado  := (Estado subclasses detect: [:aSubclass | aSubclass esteTamanioSirve: (self size) conLimite: sizeLimit ]) new.! !
 
 
 !OOStack methodsFor: 'private - accessing' stamp: 'MdC 5/16/2022 13:44:24'!
@@ -508,14 +508,14 @@ stackFullErrorDescription
 	^ 'Stack is full'! !
 
 
-!OOStack class methodsFor: 'class initialization' stamp: 'MdC 5/13/2022 16:51:13'!
+!OOStack class methodsFor: 'class initialization' stamp: 'JM 5/16/2022 18:09:25'!
 initializeWithSize: aNumber
 	
 	|stack|
 	
 	stack := OOStack new.
 	
-	stack tamanioLimite: aNumber.
+	stack sizeLimit: aNumber.
 	
 	^stack.! !
 
@@ -527,35 +527,35 @@ Object subclass: #SentenceFinderByPrefix
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefix methodsFor: 'serching' stamp: 'MdC 5/16/2022 14:28:22'!
+!SentenceFinderByPrefix methodsFor: 'searching' stamp: 'JM 5/16/2022 18:07:15'!
 find: aPrefix inAStack: aStack
 
-| stackWithPrefixes stackInverso  |
+| stackWithPrefixes invertedStack  |
 
-stackInverso := OOStack new.
+invertedStack := OOStack new.
 stackWithPrefixes := OOStack new.
 
-self find: aPrefix in: aStack andSaveStringsIn: stackWithPrefixes withInverseStack: stackInverso.
+self find: aPrefix in: aStack andSaveStringsIn: stackWithPrefixes withInverseStack: invertedStack.
 
-self restaurarStackOriginal: aStack con: stackInverso.
+self restoreOriginalStack: aStack withInverseStack: invertedStack.
 
 ^stackWithPrefixes.
 ! !
 
 
-!SentenceFinderByPrefix methodsFor: 'private - serching' stamp: 'MdC 5/16/2022 14:24:40'!
-find: aPrefix in: aStack andSaveStringsIn: stackWithPrefixes withInverseStack: stackInverso
+!SentenceFinderByPrefix methodsFor: 'private - searching' stamp: 'JM 5/16/2022 18:07:33'!
+find: aPrefix in: aStack andSaveStringsIn: stackWithPrefixes withInverseStack: anInvertedStack
 
 	| aString |
 	
 	(1 to: aStack size) do: [:i |
 		aString := aStack pop.
-		stackInverso push: aString.
+		anInvertedStack push: aString.
 		(aString beginsWith: aPrefix) ifTrue: [ stackWithPrefixes push: aString. ].
 		].! !
 
-!SentenceFinderByPrefix methodsFor: 'private - serching' stamp: 'MdC 5/16/2022 14:18:49'!
-restaurarStackOriginal: aStack con: stackInverso
+!SentenceFinderByPrefix methodsFor: 'private - searching' stamp: 'JM 5/16/2022 18:07:43'!
+restoreOriginalStack: aStack withInverseStack: anInvertedStack
 
-	(1 to: stackInverso size) do: [:i | aStack push: stackInverso pop.].
+	(1 to: anInvertedStack size) do: [:i | aStack push: anInvertedStack pop.].
 ! !
