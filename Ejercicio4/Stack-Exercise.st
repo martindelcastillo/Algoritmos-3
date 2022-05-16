@@ -276,20 +276,20 @@ Object subclass: #Estado
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!Estado methodsFor: 'accessing' stamp: 'MdC 5/12/2022 19:51:29'!
-top: stack
+!Estado methodsFor: 'accessing' stamp: 'MdC 5/16/2022 13:42:33'!
+top: aOOStack
 
 	self subclassResponsibility ! !
 
 
-!Estado methodsFor: 'adding' stamp: 'MdC 5/13/2022 17:16:07'!
-push: anObject in: aStack
+!Estado methodsFor: 'adding' stamp: 'MdC 5/16/2022 13:42:40'!
+push: anObject in: aOOStack
 
 	self subclassResponsibility ! !
 
 
-!Estado methodsFor: 'removing' stamp: 'MdC 5/12/2022 19:51:24'!
-pop: stack
+!Estado methodsFor: 'removing' stamp: 'MdC 5/16/2022 13:42:36'!
+pop: aOOStack
 
 	self subclassResponsibility ! !
 
@@ -312,22 +312,22 @@ Estado subclass: #Lleno
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!Lleno methodsFor: 'accessing' stamp: 'MdC 5/13/2022 16:35:28'!
-top: stack
+!Lleno methodsFor: 'accessing' stamp: 'MdC 5/16/2022 13:53:43'!
+top: aOOStack
 
-	^stack last.! !
+	^aOOStack topEnStackNoVacio.! !
 
 
-!Lleno methodsFor: 'adding' stamp: 'MdC 5/13/2022 16:39:50'!
-push: anObject in: aStack
+!Lleno methodsFor: 'adding' stamp: 'MdC 5/16/2022 13:41:48'!
+push: anObject in: aOOStack
 
 	^self error: OOStack stackFullErrorDescription.! !
 
 
-!Lleno methodsFor: 'removing' stamp: 'MdC 5/13/2022 16:35:12'!
-pop: stack
+!Lleno methodsFor: 'removing' stamp: 'MdC 5/16/2022 13:53:48'!
+pop: aOOStack
 
-	^stack removeLast.! !
+	^aOOStack popEnStackNoVacio.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -348,22 +348,22 @@ Estado subclass: #NoVacio
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!NoVacio methodsFor: 'accessing' stamp: 'MdC 5/12/2022 19:46:13'!
-top: stack
+!NoVacio methodsFor: 'accessing' stamp: 'MdC 5/16/2022 13:53:33'!
+top: aOOStack
 
-	^stack last.! !
-
-
-!NoVacio methodsFor: 'adding' stamp: 'MdC 5/13/2022 16:37:32'!
-push: anObject in: aStack
-
-	aStack add: anObject.! !
+	^aOOStack topEnStackNoVacio.! !
 
 
-!NoVacio methodsFor: 'removing' stamp: 'MdC 5/12/2022 19:45:26'!
-pop: stack
+!NoVacio methodsFor: 'adding' stamp: 'MdC 5/16/2022 13:53:29'!
+push: anObject in: aOOStack
 
-	^stack removeLast.! !
+	aOOStack pushEnStackNoLleno: anObject.! !
+
+
+!NoVacio methodsFor: 'removing' stamp: 'MdC 5/16/2022 13:53:36'!
+pop: aOOStack
+
+	^aOOStack popEnStackNoVacio.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -384,20 +384,20 @@ Estado subclass: #Vacio
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!Vacio methodsFor: 'accessing' stamp: 'MdC 5/12/2022 20:02:36'!
-top: stack
+!Vacio methodsFor: 'accessing' stamp: 'MdC 5/16/2022 13:42:26'!
+top: aOOStack
 	
 	^self error: OOStack stackEmptyErrorDescription! !
 
 
-!Vacio methodsFor: 'adding' stamp: 'MdC 5/13/2022 16:37:58'!
-push: anObject in: aStack
+!Vacio methodsFor: 'adding' stamp: 'MdC 5/16/2022 13:53:25'!
+push: anObject in: aOOStack
 
-	aStack add: anObject.! !
+	aOOStack pushEnStackNoLleno: anObject.! !
 
 
-!Vacio methodsFor: 'removing' stamp: 'MdC 5/12/2022 20:02:29'!
-pop: stack
+!Vacio methodsFor: 'removing' stamp: 'MdC 5/16/2022 13:42:16'!
+pop: aOOStack
 	
 	^self error: OOStack stackEmptyErrorDescription! !
 
@@ -430,6 +430,39 @@ initialize
 	self tamanioLimite: infinity.! !
 
 
+!OOStack methodsFor: 'accessing' stamp: 'MdC 5/11/2022 21:47:24'!
+size
+
+	^stack size.! !
+
+!OOStack methodsFor: 'accessing' stamp: 'MdC 5/16/2022 13:49:22'!
+top
+
+	^estado top: self.! !
+
+
+!OOStack methodsFor: 'adding' stamp: 'MdC 5/16/2022 13:49:16'!
+push: AnObject
+	
+	estado push: AnObject in: self.
+	
+	self verificarEstado.! !
+
+
+!OOStack methodsFor: 'removing' stamp: 'MdC 5/16/2022 13:49:09'!
+pop
+
+	self verificarEstado.
+	
+	^estado pop: self.! !
+
+
+!OOStack methodsFor: 'testing' stamp: 'MdC 5/12/2022 19:49:55'!
+isEmpty
+
+	^stack size = 0.! !
+
+
 !OOStack methodsFor: 'private' stamp: 'MdC 5/13/2022 16:51:46'!
 tamanioLimite: aSizeLimit
 
@@ -441,37 +474,22 @@ verificarEstado
 	estado  := (Estado subclasses detect: [:aSubclass | aSubclass esteTamanioSirve: (self size) conLimite: tamanioLimite ]) new.! !
 
 
-!OOStack methodsFor: 'testing' stamp: 'MdC 5/12/2022 19:49:55'!
-isEmpty
+!OOStack methodsFor: 'private - accessing' stamp: 'MdC 5/16/2022 13:44:24'!
+topEnStackNoVacio
 
-	^stack size = 0.! !
-
-
-!OOStack methodsFor: 'accessing' stamp: 'MdC 5/11/2022 21:47:24'!
-size
-
-	^stack size.! !
-
-!OOStack methodsFor: 'accessing' stamp: 'MdC 5/12/2022 20:03:51'!
-top
-
-	^estado top: stack.! !
+	^stack last.! !
 
 
-!OOStack methodsFor: 'adding' stamp: 'MdC 5/13/2022 16:56:04'!
-push: AnObject
-	
-	estado push: AnObject in: stack.
-	
-	self verificarEstado.! !
+!OOStack methodsFor: 'private - adding' stamp: 'MdC 5/16/2022 13:46:55'!
+pushEnStackNoLleno: anObject
+
+	^stack add: anObject.! !
 
 
-!OOStack methodsFor: 'removing' stamp: 'MdC 5/12/2022 20:03:58'!
-pop
+!OOStack methodsFor: 'private - removing' stamp: 'MdC 5/16/2022 13:43:58'!
+popEnStackNoVacio
 
-	self verificarEstado.
-	
-	^estado pop: stack.! !
+	^stack removeLast.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -509,21 +527,35 @@ Object subclass: #SentenceFinderByPrefix
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefix methodsFor: 'serching' stamp: 'MdC 5/13/2022 17:39:31'!
+!SentenceFinderByPrefix methodsFor: 'serching' stamp: 'MdC 5/16/2022 14:28:22'!
 find: aPrefix inAStack: aStack
 
-| stackWithPrefixes stackInverso aString |
+| stackWithPrefixes stackInverso  |
 
 stackInverso := OOStack new.
 stackWithPrefixes := OOStack new.
 
-(1 to: aStack size) do: [:i |
-	aString := aStack pop.
-	stackInverso push: aString.
-	(aString beginsWith: aPrefix) ifTrue: [ stackWithPrefixes push: aString. ].
-	].
+self find: aPrefix in: aStack andSaveStringsIn: stackWithPrefixes withInverseStack: stackInverso.
 
-(1 to: stackInverso size) do: [:i | aStack push: stackInverso pop.].
+self restaurarStackOriginal: aStack con: stackInverso.
 
 ^stackWithPrefixes.
+! !
+
+
+!SentenceFinderByPrefix methodsFor: 'private - serching' stamp: 'MdC 5/16/2022 14:24:40'!
+find: aPrefix in: aStack andSaveStringsIn: stackWithPrefixes withInverseStack: stackInverso
+
+	| aString |
+	
+	(1 to: aStack size) do: [:i |
+		aString := aStack pop.
+		stackInverso push: aString.
+		(aString beginsWith: aPrefix) ifTrue: [ stackWithPrefixes push: aString. ].
+		].! !
+
+!SentenceFinderByPrefix methodsFor: 'private - serching' stamp: 'MdC 5/16/2022 14:18:49'!
+restaurarStackOriginal: aStack con: stackInverso
+
+	(1 to: stackInverso size) do: [:i | aStack push: stackInverso pop.].
 ! !
