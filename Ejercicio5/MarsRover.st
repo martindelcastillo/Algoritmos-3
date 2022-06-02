@@ -5,8 +5,8 @@ TestCase subclass: #MarsRoverTest
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!MarsRoverTest methodsFor: 'testing' stamp: 'JM 5/31/2022 18:45:46'!
-test01
+!MarsRoverTest methodsFor: 'testing' stamp: 'MdC 6/2/2022 14:37:24'!
+test01MarsRoverStartsAt00FacingEast
 
 	| marsRover |
 	
@@ -15,8 +15,8 @@ test01
 	self assert: (marsRover position = (0@0)).
 	self assert: (marsRover orientation class = East).! !
 
-!MarsRoverTest methodsFor: 'testing' stamp: 'JM 5/31/2022 17:58:29'!
-test02
+!MarsRoverTest methodsFor: 'testing' stamp: 'MdC 6/2/2022 14:37:31'!
+test02FCommandMovesMarsRover
 
 	| marsRover |
 	
@@ -26,8 +26,8 @@ test02
 	
 	self assert: (marsRover position = (1@0)).! !
 
-!MarsRoverTest methodsFor: 'testing' stamp: 'JM 5/31/2022 17:58:29'!
-test03
+!MarsRoverTest methodsFor: 'testing' stamp: 'MdC 6/2/2022 14:37:37'!
+test03MultipleFCommandMovesMarsRoverToCorrectPosition
 
 	| marsRover |
 	
@@ -38,8 +38,8 @@ test03
 		
 	self assert: (marsRover position = (2@0)).! !
 
-!MarsRoverTest methodsFor: 'testing' stamp: 'JM 5/31/2022 17:58:29'!
-test04
+!MarsRoverTest methodsFor: 'testing' stamp: 'MdC 6/2/2022 14:37:48'!
+test04BCommandMovesMarsRoverBackwards
 
 	| marsRover |
 	
@@ -49,8 +49,8 @@ test04
 		
 	self assert: (marsRover position = (-1@0)).! !
 
-!MarsRoverTest methodsFor: 'testing' stamp: 'JM 5/31/2022 17:58:29'!
-test05
+!MarsRoverTest methodsFor: 'testing' stamp: 'MdC 6/2/2022 14:37:52'!
+test05LCommandRotatesMarsRoverToCorrectPosition
 
 	| marsRover |
 	
@@ -61,8 +61,8 @@ test05
 		
 	self assert: (marsRover position = (0@1)).! !
 
-!MarsRoverTest methodsFor: 'testing' stamp: 'JM 6/2/2022 11:42:00'!
-test06
+!MarsRoverTest methodsFor: 'testing' stamp: 'MdC 6/2/2022 14:37:57'!
+test06RAndLCommandsWorkTogether
 
 	| marsRover |
 	
@@ -74,8 +74,8 @@ test06
 		
 	self assert: (marsRover position = (1@0)).! !
 
-!MarsRoverTest methodsFor: 'testing' stamp: 'JM 5/31/2022 17:58:29'!
-test07
+!MarsRoverTest methodsFor: 'testing' stamp: 'MdC 6/2/2022 14:38:02'!
+test07MultipleCommandsCanBeSendAtTheSameTime
 
 	| marsRover |
 	
@@ -85,8 +85,8 @@ test07
 		
 	self assert: (marsRover position = (3@0)).! !
 
-!MarsRoverTest methodsFor: 'testing' stamp: 'JM 6/2/2022 11:23:27'!
-test08
+!MarsRoverTest methodsFor: 'testing' stamp: 'MdC 6/2/2022 14:38:08'!
+test08ReceivingAnInvalidCommandStopsFurtherCommandsFromExecuting
 
 	| marsRover |
 	
@@ -99,8 +99,8 @@ test08
 		self assert: (marsRover position = (1@0)).
 		].! !
 
-!MarsRoverTest methodsFor: 'testing' stamp: 'JM 5/31/2022 18:35:55'!
-test09
+!MarsRoverTest methodsFor: 'testing' stamp: 'MdC 6/2/2022 14:38:16'!
+test09LCommandMakesMarsRoverFaceCorrectCardinalPoint
 
 	| marsRover |
 	
@@ -110,8 +110,8 @@ test09
 		
 	self assert: (marsRover orientation class = North).! !
 
-!MarsRoverTest methodsFor: 'testing' stamp: 'JM 5/31/2022 18:36:59'!
-test10
+!MarsRoverTest methodsFor: 'testing' stamp: 'MdC 6/2/2022 14:38:21'!
+test10MultipleLComandsMakesMarsRoverFaceCorrectCardinalPoint
 
 	| marsRover |
 	
