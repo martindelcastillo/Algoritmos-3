@@ -5,8 +5,8 @@ TestCase subclass: #PortfolioTest
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio'!
 
-!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 13:28:40'!
-test01
+!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:39:21'!
+test01test01BalanceOfPortfolioIsTheSameAsItAccount
 
 	| account portfolio |
 	
@@ -19,8 +19,8 @@ test01
 	
 	self assert: portfolio balance equals: 50 * peso! !
 
-!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 13:28:44'!
-test02
+!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:39:35'!
+test02BalanceOfPortfoliosIsTheSumOfAccountsBalances
 
 	| account account2 portfolio |
 	
@@ -37,8 +37,8 @@ test02
 	self assert: portfolio balance equals: 40 * peso
 ! !
 
-!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 13:28:54'!
-test03
+!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:39:41'!
+test03PortfolioTransactionsIsTheSameAsAccountTransactions
 
 	| account portfolio deposit |
 	
@@ -54,8 +54,8 @@ test03
 	self assert: (account transactions includes: deposit).
 ! !
 
-!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 13:29:49'!
-test04
+!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:39:46'!
+test04PortfolioTransactionsIsTheSumOfAccountsTransactions
 
 	| account portfolio deposit account2 withdraw |
 	
@@ -76,8 +76,8 @@ test04
 	self assert: (portfolio transactions includes: withdraw).
 ! !
 
-!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 13:29:59'!
-test05
+!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:39:55'!
+test05PortfolioRegistersAccountTransactions
 
 	| account portfolio deposit  |
 	
@@ -91,8 +91,8 @@ test05
 	self assert: (portfolio hasRegistered: deposit ).
 ! !
 
-!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 13:30:03'!
-test06
+!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:40:02'!
+test06PortfolioCanWorkWithOtherPortfoliosInside
 
 	| account portfolio1 portfolio2 deposit account2 deposit2|
 	
@@ -115,8 +115,8 @@ test06
 	self assert: (portfolio2 hasRegistered: deposit2 ).
 ! !
 
-!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:20:48'!
-test07
+!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:40:13'!
+test07PortfolioCantAddAnAlreadyAddedAccount
 
 	| account portfolio |
 	
@@ -134,8 +134,8 @@ test07
 		self assert: portfolio balance equals: 50 * peso.
 		].! !
 
-!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:12:30'!
-test08
+!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:40:20'!
+test08PortfolioCantAddAccountAlreadyIncludedInOneOfHisChilds
 
 	| account portfolio portfolio1 portfolio2 |
 	
@@ -159,8 +159,8 @@ test08
 		self assert: portfolio balance equals: 50 * peso.
 		].! !
 
-!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:20:37'!
-test09
+!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:40:28'!
+test09PortfolioCantAddItself
 
     | account portfolio |
 
@@ -178,8 +178,8 @@ test09
         self assert: portfolio balance equals: 50 * peso.
         ].! !
 
-!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:15:59'!
-test10
+!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:40:33'!
+test10PortfolioChildCantAddAccountThatExistInFatherPortfolio
 
 	| account portfolio1 portfolio |
 	
@@ -200,8 +200,8 @@ test10
 		].
 ! !
 
-!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:09:52'!
-test11
+!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:40:38'!
+test11PortfolioCantAddChildPortfolioIfItIncludesSameAccount
 
 	| account portfolio1 portfolio2 |
 	
@@ -619,36 +619,6 @@ add: anAccount
 	accounts add: anAccount.
 	anAccount addFather: self.! !
 
-!Portfolio methodsFor: 'adding' stamp: 'MdC 6/7/2022 15:36:04'!
-addFather: aPortfolio
-	fatherAccounts add: aPortfolio.! !
-
-!Portfolio methodsFor: 'adding' stamp: 'MdC 6/7/2022 16:20:48'!
-canAddAccount: anAccount.
-	
-	"1"
-	(accounts includes: anAccount) ifTrue: [self error: self class rule1ErrorDescription ].
-	
-	"2"
-	(1 to: accounts size) do: [ :index | 
-		((accounts at: index) includes: anAccount) ifTrue: [self error: self class rule2ErrorDescription ]
-		].
-	
-	"3"
-	(self = anAccount) ifTrue: [self error: self class rule3ErrorDescription ].
-	
-	"4"
-	(1 to: fatherAccounts size) do: [ :index |
-		((fatherAccounts at: index) fatherIncludes: anAccount)  ifTrue: [self error: self class rule4ErrorDescription]
-		].
-	
-	"5"
-	(1 to: accounts size) do: [ :index | 
-			(1 to: anAccount size) do: [ :index2 | 
-				((accounts at: index) = (anAccount at: index2)) ifTrue: [self error: self class rule5ErrorDescription ]
-			].
-		].! !
-
 
 !Portfolio methodsFor: 'initialization' stamp: 'MdC 6/7/2022 15:34:46'!
 initialize
@@ -696,6 +666,65 @@ transactions
 	
 	^transactions.! !
 
+
+!Portfolio methodsFor: 'private add messages' stamp: 'MdC 6/7/2022 16:48:18'!
+accountAlreadyInChildPortfolio: anAccount
+	
+	(1 to: accounts size) do: [ :index | 
+		((accounts at: index) includes: anAccount) ifTrue: [^true ]].
+	
+	^false
+! !
+
+!Portfolio methodsFor: 'private add messages' stamp: 'MdC 6/7/2022 16:55:48'!
+accountAlreadyInFatherPortfolio: anAccount
+		
+	(1 to: fatherAccounts size) do: [:index |
+		((fatherAccounts at: index) fatherIncludes: anAccount) ifTrue: [^true ]].
+		
+	^false
+! !
+
+!Portfolio methodsFor: 'private add messages' stamp: 'MdC 6/7/2022 16:47:39'!
+accountAlreadyInPortfolio: anAccount
+	
+	
+	^accounts includes: anAccount.! !
+
+!Portfolio methodsFor: 'private add messages' stamp: 'MdC 6/7/2022 16:58:23'!
+accountHasAccountAlreadyInSelf: anAccount
+
+	(1 to: accounts size) do: [:index |
+		(1 to: anAccount size) do: [ :index2 | 
+			((accounts at: index) = (anAccount at: index2)) ifTrue: [^true]
+			]
+		].
+	
+	^false! !
+
+!Portfolio methodsFor: 'private add messages' stamp: 'MdC 6/7/2022 15:36:04'!
+addFather: aPortfolio
+	fatherAccounts add: aPortfolio.! !
+
+!Portfolio methodsFor: 'private add messages' stamp: 'MdC 6/8/2022 00:26:50'!
+canAddAccount: anAccount.
+
+	(self accountAlreadyInPortfolio: anAccount) ifTrue: [self error: self class rule1ErrorDescription ].
+	
+	(self accountAlreadyInChildPortfolio: anAccount) ifTrue: [self error: self class rule2ErrorDescription ].
+	
+	(self portfolioIsSelf: anAccount) ifTrue: [self error: self class rule3ErrorDescription ].
+	
+	(self accountAlreadyInFatherPortfolio: anAccount) ifTrue: [self error: self class rule4ErrorDescription ].
+		
+	(self accountHasAccountAlreadyInSelf: anAccount) ifTrue: [self error: self class rule5ErrorDescription ].
+! !
+
+!Portfolio methodsFor: 'private add messages' stamp: 'MdC 6/7/2022 16:51:46'!
+portfolioIsSelf: anAccount
+
+	^self = anAccount
+! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -789,29 +818,29 @@ includes: anAccount
 
 !classDefinition: #Transfer category: 'ServiciosFinancieros-Ejercicio'!
 Object subclass: #Transfer
-	instanceVariableNames: 'value pataDeExtraccion pataDeDeposito'
+	instanceVariableNames: 'value extractionLeg depositLeg'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio'!
 
-!Transfer methodsFor: 'initialization' stamp: 'MdC 6/5/2022 17:17:25'!
+!Transfer methodsFor: 'initialization' stamp: 'MdC 6/7/2022 16:41:50'!
 initializeFor: aValue from: accountExtraccion to: accountDeposito
 
 	value := aValue.
-	pataDeExtraccion := TransferWithdraw register: aValue on: accountExtraccion from: self.
-	pataDeDeposito := TransferDeposit register: aValue on: accountDeposito from: self.
+	extractionLeg := TransferWithdraw register: aValue on: accountExtraccion from: self.
+	depositLeg := TransferDeposit register: aValue on: accountDeposito from: self.
 ! !
 
 
-!Transfer methodsFor: 'getter' stamp: 'MdC 6/7/2022 16:32:51'!
+!Transfer methodsFor: 'getter' stamp: 'MdC 6/7/2022 16:41:43'!
 depositLeg
 
-	^pataDeDeposito ! !
+	^depositLeg ! !
 
-!Transfer methodsFor: 'getter' stamp: 'MdC 6/7/2022 16:33:06'!
+!Transfer methodsFor: 'getter' stamp: 'MdC 6/7/2022 16:41:50'!
 extractionLeg
 
-	^pataDeExtraccion! !
+	^extractionLeg! !
 
 
 !Transfer methodsFor: 'value' stamp: 'MdC 6/5/2022 16:54:24'!
