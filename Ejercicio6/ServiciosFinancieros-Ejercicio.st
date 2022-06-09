@@ -115,7 +115,7 @@ test06PortfolioCanWorkWithOtherPortfoliosInside
 	self assert: (portfolio2 hasRegistered: deposit2 ).
 ! !
 
-!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:40:13'!
+!PortfolioTest methodsFor: 'tests' stamp: 'JM 6/9/2022 13:32:58'!
 test07PortfolioCantAddAnAlreadyAddedAccount
 
 	| account portfolio |
@@ -130,11 +130,11 @@ test07PortfolioCantAddAnAlreadyAddedAccount
 	self 
 	should: [portfolio add: account]
 	raise: Error
-	withExceptionDo: [ :anError | self assert: Portfolio rule1ErrorDescription equals: anError messageText .
+	withExceptionDo: [ :anError | self assert: Portfolio case1ErrorDescription equals: anError messageText .
 		self assert: portfolio balance equals: 50 * peso.
 		].! !
 
-!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:40:20'!
+!PortfolioTest methodsFor: 'tests' stamp: 'JM 6/9/2022 13:33:05'!
 test08PortfolioCantAddAccountAlreadyIncludedInOneOfHisChilds
 
 	| account portfolio portfolio1 portfolio2 |
@@ -155,11 +155,11 @@ test08PortfolioCantAddAccountAlreadyIncludedInOneOfHisChilds
 	self 
 	should: [portfolio add: account]
 	raise: Error
-	withExceptionDo: [ :anError | self assert: Portfolio rule2ErrorDescription equals: anError messageText .
+	withExceptionDo: [ :anError | self assert: Portfolio case2ErrorDescription equals: anError messageText .
 		self assert: portfolio balance equals: 50 * peso.
 		].! !
 
-!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:40:28'!
+!PortfolioTest methodsFor: 'tests' stamp: 'JM 6/9/2022 13:33:11'!
 test09PortfolioCantAddItself
 
     | account portfolio |
@@ -174,11 +174,11 @@ test09PortfolioCantAddItself
     self 
     should: [portfolio add: portfolio]
     raise: Error
-    withExceptionDo: [ :anError | self assert: Portfolio rule3ErrorDescription equals: anError messageText .
+    withExceptionDo: [ :anError | self assert: Portfolio case3ErrorDescription equals: anError messageText .
         self assert: portfolio balance equals: 50 * peso.
         ].! !
 
-!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:40:33'!
+!PortfolioTest methodsFor: 'tests' stamp: 'JM 6/9/2022 13:33:18'!
 test10PortfolioChildCantAddAccountThatExistInFatherPortfolio
 
 	| account portfolio1 portfolio |
@@ -195,12 +195,12 @@ test10PortfolioChildCantAddAccountThatExistInFatherPortfolio
 	self 
 	should: [portfolio1 add: account]
 	raise: Error
-	withExceptionDo: [ :anError | self assert: Portfolio rule4ErrorDescription equals: anError messageText .
+	withExceptionDo: [ :anError | self assert: Portfolio case4ErrorDescription equals: anError messageText .
 		self assert: portfolio1 balance equals: 0 * peso.
 		].
 ! !
 
-!PortfolioTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:40:38'!
+!PortfolioTest methodsFor: 'tests' stamp: 'JM 6/9/2022 13:33:23'!
 test11PortfolioCantAddChildPortfolioIfItIncludesSameAccount
 
 	| account portfolio1 portfolio2 |
@@ -218,7 +218,7 @@ test11PortfolioCantAddChildPortfolioIfItIncludesSameAccount
 	self 
 	should: [portfolio1 add: portfolio2]
 	raise: Error
-	withExceptionDo: [ :anError | self assert: Portfolio rule5ErrorDescription equals: anError messageText .
+	withExceptionDo: [ :anError | self assert: Portfolio case5ErrorDescription equals: anError messageText .
 		self assert: portfolio1 balance equals: 50 * peso.
 		].! !
 
@@ -337,8 +337,8 @@ test01TransferAffectsBalanceOnTransactionValue
 	self assert: 20 * peso equals: accountDepositLeg balance.
 ! !
 
-!TransferTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:31:59'!
-test02TrasnsferKnowsItsTransferedValue
+!TransferTest methodsFor: 'tests' stamp: 'JM 6/9/2022 13:37:22'!
+test02TransferKnowsTransferedValue
 
 	| accountExtractionLeg accountDepositLeg transfer |
 	
@@ -383,7 +383,7 @@ test04AccountsOnlyKnowRegisteredTransactions
 	self assert: (accountDepositLeg transactions size) equals: 1.
 	! !
 
-!TransferTest methodsFor: 'tests' stamp: 'MdC 6/7/2022 16:34:49'!
+!TransferTest methodsFor: 'tests' stamp: 'JM 6/9/2022 13:31:49'!
 test05TransaccionLegsKnowsItsCounterpart
 
 	| accountExtractionLeg accountDepositLeg transfer |
@@ -395,8 +395,8 @@ test05TransaccionLegsKnowsItsCounterpart
 	
 	transfer := Transfer register: 20 * peso from: accountExtractionLeg to: accountDepositLeg.
 	
-	self assert: ((transfer extractionLeg contrapart) = transfer depositLeg).
-	self assert: ((transfer depositLeg contrapart) = transfer extractionLeg).
+	self assert: ((transfer extractionLeg counterpart) = transfer depositLeg).
+	self assert: ((transfer depositLeg counterpart) = transfer extractionLeg).
 	! !
 
 
@@ -493,8 +493,8 @@ valueInBalance
 	^ self value! !
 
 
-!TransferDeposit methodsFor: 'getter' stamp: 'MdC 6/7/2022 16:34:48'!
-contrapart
+!TransferDeposit methodsFor: 'getter' stamp: 'JM 6/9/2022 13:31:49'!
+counterpart
 	^ transfer extractionLeg ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -538,8 +538,8 @@ valueInBalance
 	^ self value negated! !
 
 
-!TransferWithdraw methodsFor: 'getter' stamp: 'MdC 6/7/2022 16:34:49'!
-contrapart
+!TransferWithdraw methodsFor: 'getter' stamp: 'JM 6/9/2022 13:31:49'!
+counterpart
 	^ transfer depositLeg ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -601,23 +601,14 @@ Object subclass: #Portfolio
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio'!
 
-!Portfolio methodsFor: 'comparing' stamp: 'MdC 6/7/2022 16:12:30'!
+!Portfolio methodsFor: 'comparing' stamp: 'JM 6/9/2022 13:33:05'!
 fatherIncludes: anAccount
 
 	(1 to: fatherAccounts size) do: [ :index |
-		((fatherAccounts at: index) fatherIncludes: anAccount)  ifTrue: [self error: self class rule2ErrorDescription ]
+		((fatherAccounts at: index) fatherIncludes: anAccount)  ifTrue: [self error: self class case2ErrorDescription ]
 		].
 	
 	^self includes: anAccount.! !
-
-
-!Portfolio methodsFor: 'adding' stamp: 'MdC 6/7/2022 15:54:37'!
-add: anAccount
-	
-	self canAddAccount: anAccount.
-	
-	accounts add: anAccount.
-	anAccount addFather: self.! !
 
 
 !Portfolio methodsFor: 'initialization' stamp: 'MdC 6/7/2022 15:34:46'!
@@ -636,6 +627,14 @@ size
 	^accounts size! !
 
 
+!Portfolio methodsFor: 'main protocol' stamp: 'MdC 6/7/2022 15:54:37'!
+add: anAccount
+	
+	self canAddAccount: anAccount.
+	
+	accounts add: anAccount.
+	anAccount addFather: self.! !
+
 !Portfolio methodsFor: 'main protocol' stamp: 'MdC 6/6/2022 20:27:43'!
 balance 
 
@@ -646,11 +645,11 @@ hasRegistered: aTransaction
 
 	^self transactions includes: aTransaction.! !
 
-!Portfolio methodsFor: 'main protocol' stamp: 'MdC 6/7/2022 16:12:30'!
+!Portfolio methodsFor: 'main protocol' stamp: 'JM 6/9/2022 13:33:05'!
 includes: anAccount
 		
 	(1 to: accounts size) do: [ :index | 
-		((accounts at: index) includes: anAccount) ifTrue: [self error: self class rule2ErrorDescription ]].
+		((accounts at: index) includes: anAccount) ifTrue: [self error: self class case2ErrorDescription ]].
 	
 	(accounts includes: anAccount) ifTrue: [^true].
 	
@@ -706,18 +705,18 @@ accountHasAccountAlreadyInSelf: anAccount
 addFather: aPortfolio
 	fatherAccounts add: aPortfolio.! !
 
-!Portfolio methodsFor: 'private add messages' stamp: 'MdC 6/8/2022 00:26:50'!
+!Portfolio methodsFor: 'private add messages' stamp: 'JM 6/9/2022 13:33:23'!
 canAddAccount: anAccount.
 
-	(self accountAlreadyInPortfolio: anAccount) ifTrue: [self error: self class rule1ErrorDescription ].
+	(self accountAlreadyInPortfolio: anAccount) ifTrue: [self error: self class case1ErrorDescription ].
 	
-	(self accountAlreadyInChildPortfolio: anAccount) ifTrue: [self error: self class rule2ErrorDescription ].
+	(self accountAlreadyInChildPortfolio: anAccount) ifTrue: [self error: self class case2ErrorDescription ].
 	
-	(self portfolioIsSelf: anAccount) ifTrue: [self error: self class rule3ErrorDescription ].
+	(self portfolioIsSelf: anAccount) ifTrue: [self error: self class case3ErrorDescription ].
 	
-	(self accountAlreadyInFatherPortfolio: anAccount) ifTrue: [self error: self class rule4ErrorDescription ].
+	(self accountAlreadyInFatherPortfolio: anAccount) ifTrue: [self error: self class case4ErrorDescription ].
 		
-	(self accountHasAccountAlreadyInSelf: anAccount) ifTrue: [self error: self class rule5ErrorDescription ].
+	(self accountHasAccountAlreadyInSelf: anAccount) ifTrue: [self error: self class case5ErrorDescription ].
 ! !
 
 !Portfolio methodsFor: 'private add messages' stamp: 'MdC 6/7/2022 16:51:46'!
@@ -732,29 +731,29 @@ portfolioIsSelf: anAccount
 Portfolio class
 	instanceVariableNames: ''!
 
-!Portfolio class methodsFor: 'error handling' stamp: 'MdC 6/7/2022 16:20:48'!
-rule1ErrorDescription
+!Portfolio class methodsFor: 'error handling' stamp: 'JM 6/9/2022 13:32:58'!
+case1ErrorDescription
 
 	^'account already in portfolio'! !
 
-!Portfolio class methodsFor: 'error handling' stamp: 'MdC 6/7/2022 16:12:30'!
-rule2ErrorDescription
+!Portfolio class methodsFor: 'error handling' stamp: 'JM 6/9/2022 13:33:05'!
+case2ErrorDescription
 
 	^'portfolio cant add account already included in an included porfolio'! !
 
-!Portfolio class methodsFor: 'error handling' stamp: 'MdC 6/7/2022 16:20:37'!
-rule3ErrorDescription
+!Portfolio class methodsFor: 'error handling' stamp: 'JM 6/9/2022 13:33:11'!
+case3ErrorDescription
 
 	^'porfolio cant add itself'! !
 
-!Portfolio class methodsFor: 'error handling' stamp: 'MdC 6/7/2022 16:15:59'!
-rule4ErrorDescription
+!Portfolio class methodsFor: 'error handling' stamp: 'JM 6/9/2022 13:33:17'!
+case4ErrorDescription
 
 	^'portfolio cant add account when it is already in a fathers portfolio'
 	! !
 
-!Portfolio class methodsFor: 'error handling' stamp: 'MdC 6/7/2022 16:10:53'!
-rule5ErrorDescription
+!Portfolio class methodsFor: 'error handling' stamp: 'JM 6/9/2022 13:33:23'!
+case5ErrorDescription
 
 	^'portfolio cant add portfolio with account already included in first porfolio'! !
 
@@ -799,19 +798,19 @@ transactions
 	^ transactions copy! !
 
 
-!ReceptiveAccount methodsFor: 'portfolio protocol' stamp: 'MdC 6/7/2022 15:49:43'!
+!ReceptiveAccount methodsFor: 'private portfolio protocol' stamp: 'MdC 6/7/2022 15:49:43'!
 addFather: aPortfolio
 ! !
 
-!ReceptiveAccount methodsFor: 'portfolio protocol' stamp: 'MdC 6/7/2022 15:27:55'!
+!ReceptiveAccount methodsFor: 'private portfolio protocol' stamp: 'MdC 6/7/2022 15:27:55'!
 at: anIndex
 	^self! !
 
-!ReceptiveAccount methodsFor: 'portfolio protocol' stamp: 'MdC 6/7/2022 15:47:45'!
+!ReceptiveAccount methodsFor: 'private portfolio protocol' stamp: 'MdC 6/7/2022 15:47:45'!
 fatherIncludes: anAccount
 	^false! !
 
-!ReceptiveAccount methodsFor: 'portfolio protocol' stamp: 'MdC 6/6/2022 21:21:14'!
+!ReceptiveAccount methodsFor: 'private portfolio protocol' stamp: 'MdC 6/6/2022 21:21:14'!
 includes: anAccount
 	^false! !
 
