@@ -5,8 +5,8 @@ TestCase subclass: #AccountSummaryTest
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros2'!
 
-!AccountSummaryTest methodsFor: 'testing' stamp: 'JM 6/14/2022 14:11:27'!
-test01
+!AccountSummaryTest methodsFor: 'test' stamp: 'JM 6/14/2022 17:01:41'!
+test01emptyAccountHas0BalanceInAccountSummary
 
 	| account collection |
 
@@ -17,8 +17,8 @@ test01
 	
 	self assert: collection equals: (account makeReport: AccountSummary).! !
 
-!AccountSummaryTest methodsFor: 'testing' stamp: 'JM 6/14/2022 14:12:20'!
-test02
+!AccountSummaryTest methodsFor: 'test' stamp: 'JM 6/14/2022 17:01:32'!
+test02DepositModifiesAccountSummary
 
 	| account collection |
 
@@ -31,8 +31,8 @@ test02
 	
 	self assert: collection equals: (account makeReport: AccountSummary).! !
 
-!AccountSummaryTest methodsFor: 'testing' stamp: 'JM 6/14/2022 14:12:56'!
-test03
+!AccountSummaryTest methodsFor: 'test' stamp: 'JM 6/14/2022 17:01:27'!
+test03WithdrawModifiesAccountSummary
 
 	| account collection |
 
@@ -45,8 +45,8 @@ test03
 	
 	self assert: collection equals: (account makeReport: AccountSummary).! !
 
-!AccountSummaryTest methodsFor: 'testing' stamp: 'JM 6/14/2022 14:16:19'!
-test04
+!AccountSummaryTest methodsFor: 'test' stamp: 'JM 6/14/2022 17:01:16'!
+test04TransferWithdrawModifiesAccountSummary
 
 	| account collection otherAccount|
 
@@ -61,8 +61,8 @@ test04
 	
 	self assert: collection equals: (account makeReport: AccountSummary).! !
 
-!AccountSummaryTest methodsFor: 'testing' stamp: 'JM 6/14/2022 14:16:49'!
-test05
+!AccountSummaryTest methodsFor: 'test' stamp: 'JM 6/14/2022 17:01:58'!
+test05TransferDepositModifiesAccountSummary
 
 	| account collection otherAccount|
 
@@ -77,8 +77,8 @@ test05
 	
 	self assert: collection equals: (account makeReport: AccountSummary).! !
 
-!AccountSummaryTest methodsFor: 'testing' stamp: 'JM 6/14/2022 14:18:44'!
-test06
+!AccountSummaryTest methodsFor: 'test' stamp: 'JM 6/14/2022 17:02:45'!
+test06AccountSummaryWorksWithAnyTransactionOrTransfer
 
 	| account collection otherAccount|
 
@@ -99,136 +99,6 @@ test06
 
 	
 	self assert: collection equals: (account makeReport: AccountSummary).! !
-
-
-!classDefinition: #EspecialReports category: 'ServiciosFinancieros2'!
-TestCase subclass: #EspecialReports
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'ServiciosFinancieros2'!
-
-!EspecialReports methodsFor: 'tests' stamp: 'MdC 6/14/2022 16:57:42'!
-test01EmptyPortfolioReturnItsName
-
-	| familyPortfolio collection |
-	
-	familyPortfolio _ Portfolio named: 'Portfolio de la familia'.
-	
-	collection _ OrderedCollection with: 'Portfolio de la familia'.
-	
-	self assert: collection equals: (familyPortfolio makeReport: PortfolioTreePrinter).! !
-
-!EspecialReports methodsFor: 'tests' stamp: 'MdC 6/14/2022 16:57:58'!
-test02PortfolioWithAccountReturnsBothNames
-
-	| myAccount familyPortfolio collection |
-	
-	myAccount _ ReceptiveAccount named: 'Cuenta mia'. 
-	familyPortfolio _ Portfolio named: 'Portfolio de la familia' with: myAccount.
-	
-	collection _ OrderedCollection with: 'Portfolio de la familia' with: 'Cuenta mia'.
-	
-	self assert: collection equals: (familyPortfolio makeReport: PortfolioTreePrinter).! !
-
-!EspecialReports methodsFor: 'tests' stamp: 'MdC 6/14/2022 16:58:07'!
-test03PortfolioWithPortfolioReturnsAllNames
-
-	| johnsAccount familyPortfolio childrenPortfolio collection |
-	
-	johnsAccount _ ReceptiveAccount named: 'Cuenta de Juan'.
-	childrenPortfolio _ Portfolio named: 'Portfolio de hijos' with: johnsAccount.
-	familyPortfolio _ Portfolio named: 'Portfolio de la familia' with: childrenPortfolio.
-	
-	collection _ OrderedCollection with: 'Portfolio de la familia' with: 'Portfolio de hijos' with: 'Cuenta de Juan'.
-	
-	self assert: collection equals: (familyPortfolio makeReport: PortfolioTreePrinter).! !
-
-!EspecialReports methodsFor: 'tests' stamp: 'MdC 6/14/2022 16:58:21'!
-test04EmptyPortfolioReturnsItsNameAnd0Balance
-
-	| familyPortfolio collection |
-	
-	familyPortfolio _ Portfolio named: 'Portfolio de la familia'.
-	
-	collection _ OrderedCollection with: 'Portfolio de la familia' with: 'Balance = 0 * pesos'.
-	
-	self assert: collection equals: (familyPortfolio makeReport: PortfolioDetailedTreePrinter).! !
-
-!EspecialReports methodsFor: 'tests' stamp: 'MdC 6/14/2022 16:59:42'!
-test05PortfolioWithReceptiveAccountReturnsCorrectDetailedTreePrinter
-
-	| myAccount familyPortfolio collection |
-	
-	myAccount _ ReceptiveAccount named: 'Cuenta mia'. 
-	familyPortfolio _ Portfolio named: 'Portfolio de la familia' with: myAccount.
-	
-	collection _ OrderedCollection new.
-	collection add: 'Portfolio de la familia'.
-	collection add: 'Cuenta mia'.
-	collection add: 'Balance = 0 * pesos'.
-	collection add: 'Balance = 0 * pesos'.
-	
-	self assert: collection equals: (familyPortfolio makeReport: PortfolioDetailedTreePrinter).! !
-
-!EspecialReports methodsFor: 'tests' stamp: 'MdC 6/14/2022 16:59:15'!
-test06PortfolioWithPortfolioReturnsCorrectDetailedTreePrinter
-
-	| johnsAccount familyPortfolio childrenPortfolio collection |
-	
-	johnsAccount _ ReceptiveAccount named: 'Cuenta de Juan'.
-	childrenPortfolio _ Portfolio named: 'Portfolio de hijos' with: johnsAccount.
-	familyPortfolio _ Portfolio named: 'Portfolio de la familia' with: childrenPortfolio.
-	
-	collection _ OrderedCollection new.
-	collection add: 'Portfolio de la familia'.
-	collection add: 'Portfolio de hijos'.
-	collection add: 'Cuenta de Juan'.
-	collection add: 'Balance = 0 * pesos'.
-	collection add: 'Balance = 0 * pesos'.
-	collection add: 'Balance = 0 * pesos'.
-	
-	self assert: collection equals: (familyPortfolio makeReport: PortfolioDetailedTreePrinter).! !
-
-!EspecialReports methodsFor: 'tests' stamp: 'MdC 6/14/2022 16:59:07'!
-test07DetailedTreePrinterWorkswithAPortfolioWithAccountsAndFilledPortfolios
-
-    | familyPortfolio collection cuentaMia children other cuentaAngeles cuentaJuan |
-
-    other _ ReceptiveAccount new.
-    cuentaMia _ ReceptiveAccount named: 'Cuenta Mia'.
-    Deposit register: 100 * peso on: cuentaMia.
-    Withdraw register: 80 * peso on: cuentaMia.
-
-    cuentaJuan _ ReceptiveAccount named: 'Cuenta de Juan'.
-    Deposit register: 100 * peso on: cuentaJuan.
-    Withdraw register: 60 * peso on: cuentaJuan.
-    cuentaAngeles _ ReceptiveAccount named: 'Cuenta de Angeles'.
-    Transfer amount: 20 * peso from: cuentaAngeles  to: other.
-
-    children _ Portfolio named: 'Portfolio de hijos' with: cuentaJuan with: cuentaAngeles.
-    familyPortfolio _ Portfolio named: 'Portfolio de la familia' with: cuentaMia with: children.
-
-
-    collection _ OrderedCollection with: 'Portfolio de la familia'.
-    collection add: 'Cuenta Mia'.
-    collection add: 'Depósito por 100 * pesos'.
-    collection add: 'Extracción por 80 * pesos'.
-    collection add: 'Balance = 20 * pesos'.
-    collection add: 'Portfolio de hijos'.
-    collection add: 'Cuenta de Juan'.
-    collection add: 'Depósito por 100 * pesos'.
-    collection add: 'Extracción por 60 * pesos'.
-    collection add: 'Balance = 40 * pesos'.
-    collection add: 'Cuenta de Angeles'.
-    collection add: 'Salida por transferencia de 20 * pesos'.
-    collection add: 'Balance = -20 * pesos'.
-    collection add: 'Balance = 20 * pesos'.
-    collection add: 'Balance = 40 * pesos'.
-
-
-    self assert: collection equals: (familyPortfolio makeReport: PortfolioDetailedTreePrinter).
-! !
 
 
 !classDefinition: #PortfolioTest category: 'ServiciosFinancieros2'!
@@ -535,6 +405,157 @@ test07AccountKnowsItsTransactions
 ! !
 
 
+!classDefinition: #SpecialReportsTest category: 'ServiciosFinancieros2'!
+TestCase subclass: #SpecialReportsTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros2'!
+
+!SpecialReportsTest methodsFor: 'test' stamp: 'JM 6/14/2022 16:53:12'!
+test01EmptyPortfolioReturnItsName
+
+	| familyPortfolio collection|
+	
+	familyPortfolio _ Portfolio named: 'Portfolio de la familia'.
+	
+	collection _ OrderedCollection with: 'Portfolio de la familia'.
+	
+	self assert: collection equals: (familyPortfolio makeReport: PortfolioTreePrinter).
+	
+	! !
+
+!SpecialReportsTest methodsFor: 'test' stamp: 'JM 6/14/2022 16:53:34'!
+test02PortfolioWithAccountReturnsBothNames
+
+	| familyPortfolio collection johnsAccount|
+	
+	johnsAccount _ ReceptiveAccount named: 'Cuenta de Juan'. 
+	familyPortfolio _ Portfolio named: 'Portfolio de la familia' with: johnsAccount.
+	
+	collection _ OrderedCollection with: 'Portfolio de la familia'.
+	collection add: 'Cuenta de Juan'.
+	
+	self assert: collection equals: (familyPortfolio makeReport: PortfolioTreePrinter).
+	
+	! !
+
+!SpecialReportsTest methodsFor: 'test' stamp: 'JM 6/14/2022 16:53:54'!
+test03PortfolioWithPortfolioReturnsAllNames
+
+	| familyPortfolio collection johnsAccount childrenPortfolio|
+	
+	johnsAccount _ ReceptiveAccount named: 'Cuenta de Juan'. 
+	childrenPortfolio _ Portfolio named: 'Portfolio de hijos' with: johnsAccount.
+	familyPortfolio _ Portfolio named: 'Portfolio de la familia' with: childrenPortfolio.
+	
+	collection _ OrderedCollection with: 'Portfolio de la familia'.
+	collection add: 'Portfolio de hijos'.
+	collection add: 'Cuenta de Juan'.
+	
+	self assert: collection equals: (familyPortfolio makeReport: PortfolioTreePrinter).
+	
+	! !
+
+!SpecialReportsTest methodsFor: 'test' stamp: 'JM 6/14/2022 16:54:10'!
+test04EmptyPortfolioReturnsItsNameAnd0Balance
+
+	| familyPortfolio collection |
+	
+	familyPortfolio _ Portfolio named: 'Portfolio de la familia'.
+	
+	collection _ OrderedCollection with: 'Portfolio de la familia'.
+	collection add: 'Balance = 0 * pesos'.
+	
+	self assert: collection equals: (familyPortfolio makeReport: PortfolioDetailedTreePrinter).
+	
+	! !
+
+!SpecialReportsTest methodsFor: 'test' stamp: 'JM 6/16/2022 14:17:54'!
+test05PortfolioWithReceptiveAccountReturnsCorrectDetailedTreePrinter
+
+	| myAccount familyPortfolio collection |
+	
+	myAccount _ ReceptiveAccount named: 'Cuenta mia'. 
+	familyPortfolio _ Portfolio named: 'Portfolio de la familia' with: myAccount.
+	
+	collection _ OrderedCollection new.
+	collection add: 'Portfolio de la familia'.
+	collection add: 'Cuenta mia'.
+	collection add: 'Balance = 0 * pesos'.
+	collection add: 'Balance = 0 * pesos'.
+	
+	self assert: collection equals: (familyPortfolio makeReport: PortfolioDetailedTreePrinter).
+	
+	! !
+
+!SpecialReportsTest methodsFor: 'test' stamp: 'JM 6/16/2022 14:18:21'!
+test06PortfolioWithPortfolioReturnsCorrectDetailedTreePrinter
+
+	| familyPortfolio collection cuentaMia children|
+	
+	cuentaMia _ ReceptiveAccount named: 'Cuenta Mia'.
+	Deposit register: 100 * peso on: cuentaMia.
+	Withdraw register: 80 * peso on: cuentaMia.
+	children _ Portfolio named: 'Portfolio de hijos' with: cuentaMia.
+	familyPortfolio _ Portfolio named: 'Portfolio de la familia' with: children.
+	
+	
+	collection _ OrderedCollection with: 'Portfolio de la familia'.
+	collection add: 'Portfolio de hijos'.
+	collection add: 'Cuenta Mia'.
+	collection add: 'Depósito por 100 * pesos'.
+	collection add: 'Extracción por 80 * pesos'..
+	collection add: 'Balance = 20 * pesos'.
+	collection add: 'Balance = 20 * pesos'.
+	collection add: 'Balance = 20 * pesos'.
+	
+	self assert: collection equals: (familyPortfolio makeReport: PortfolioDetailedTreePrinter).
+	
+	! !
+
+!SpecialReportsTest methodsFor: 'test' stamp: 'JM 6/16/2022 14:18:17'!
+test07DetailedTreePrinterWorkswithAPortfolioWithAccountsAndFilledPortfolios
+
+	| familyPortfolio collection cuentaMia children other cuentaAngeles cuentaJuan |
+	
+	other _ ReceptiveAccount new.
+	cuentaMia _ ReceptiveAccount named: 'Cuenta Mia'.
+	Deposit register: 100 * peso on: cuentaMia.
+	Withdraw register: 80 * peso on: cuentaMia.
+	
+	cuentaJuan _ ReceptiveAccount named: 'Cuenta de Juan'.
+	Deposit register: 100 * peso on: cuentaJuan.
+	Withdraw register: 60 * peso on: cuentaJuan.
+	cuentaAngeles _ ReceptiveAccount named: 'Cuenta de Angeles'.
+	Transfer amount: 20 * peso from: cuentaAngeles  to: other.
+	
+	children _ Portfolio named: 'Portfolio de hijos' with: cuentaJuan with: cuentaAngeles.
+	familyPortfolio _ Portfolio named: 'Portfolio de la familia' with: cuentaMia with: children.
+	
+	
+	collection _ OrderedCollection with: 'Portfolio de la familia'.
+	collection add: 'Cuenta Mia'.
+	collection add: 'Depósito por 100 * pesos'.
+	collection add: 'Extracción por 80 * pesos'.
+	collection add: 'Balance = 20 * pesos'.
+	collection add: 'Portfolio de hijos'.
+	collection add: 'Cuenta de Juan'.
+	collection add: 'Depósito por 100 * pesos'.
+	collection add: 'Extracción por 60 * pesos'.
+	collection add: 'Balance = 40 * pesos'.
+	collection add: 'Cuenta de Angeles'.
+	collection add: 'Salida por transferencia de 20 * pesos'.
+	collection add: 'Balance = -20 * pesos'.
+	collection add: 'Balance = 20 * pesos'.
+	collection add: 'Balance = 40 * pesos'.
+	
+	
+	self assert: collection equals: (familyPortfolio makeReport: PortfolioDetailedTreePrinter).
+	
+	! !
+
+
 !classDefinition: #TransferNetTest category: 'ServiciosFinancieros2'!
 TestCase subclass: #TransferNetTest
 	instanceVariableNames: ''
@@ -542,8 +563,8 @@ TestCase subclass: #TransferNetTest
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros2'!
 
-!TransferNetTest methodsFor: 'testing' stamp: 'JM 6/14/2022 14:19:55'!
-test01
+!TransferNetTest methodsFor: 'test' stamp: 'JM 6/16/2022 14:20:46'!
+test01TransferNetReportWithEmptyAccountReturns0
 
 	| account |
 
@@ -551,8 +572,8 @@ test01
 		
 	self assert: (0 * peso) equals: (account makeReport: TransferNet).! !
 
-!TransferNetTest methodsFor: 'testing' stamp: 'JM 6/14/2022 14:20:16'!
-test02
+!TransferNetTest methodsFor: 'test' stamp: 'JM 6/16/2022 14:20:41'!
+test02TransferNetReportWithATransferDepositReturnsPositiveMoney
 
 	| account accountAuxiliary |
 
@@ -563,8 +584,8 @@ test02
 		
 	self assert: (30 * peso) equals: (account makeReport: TransferNet).! !
 
-!TransferNetTest methodsFor: 'testing' stamp: 'JM 6/14/2022 14:20:29'!
-test03
+!TransferNetTest methodsFor: 'test' stamp: 'JM 6/16/2022 14:21:03'!
+test03ReportWithTransferWithdrawReturnsNegativeMoney
 
 	| account accountAuxiliary |
 
@@ -575,8 +596,8 @@ test03
 		
 	self assert: (-30 * peso) equals: (account makeReport: TransferNet).! !
 
-!TransferNetTest methodsFor: 'testing' stamp: 'JM 6/14/2022 14:20:50'!
-test04
+!TransferNetTest methodsFor: 'test' stamp: 'JM 6/16/2022 14:21:38'!
+test04ReportToAccountWithBothTypesOfTransferWorksCorrectly
 
 	| account accountAuxiliary |
 
@@ -588,8 +609,8 @@ test04
 		
 	self assert: (10 * peso) equals: (account makeReport: TransferNet).! !
 
-!TransferNetTest methodsFor: 'testing' stamp: 'JM 6/14/2022 14:21:34'!
-test05
+!TransferNetTest methodsFor: 'test' stamp: 'JM 6/16/2022 14:22:05'!
+test05ReportWithDifferentTransactionsAndTransferWorksAsIntended
 
 	| account accountAuxiliary |
 
@@ -756,7 +777,7 @@ makeReport: aReport
 
 !classDefinition: #Portfolio category: 'ServiciosFinancieros2'!
 Account subclass: #Portfolio
-	instanceVariableNames: 'accounts parents name'
+	instanceVariableNames: 'accounts parents name account'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros2'!
@@ -767,14 +788,14 @@ initialize
 	accounts := OrderedCollection new.
 	parents := OrderedCollection new.! !
 
-!Portfolio methodsFor: 'initialization' stamp: 'MdC 6/14/2022 14:55:22'!
-initializeWith: aName
+!Portfolio methodsFor: 'initialization' stamp: 'JM 6/14/2022 15:13:51'!
+initializeWithName: aName 
 	
 	name _ aName.
 	self initialize.! !
 
 
-!Portfolio methodsFor: 'main protocol' stamp: 'MdC 6/14/2022 16:08:56'!
+!Portfolio methodsFor: 'main protocol' stamp: 'JM 6/14/2022 15:44:33'!
 balance
 	
 	^accounts sum: [ :anAccount | anAccount balance ] ifEmpty: [ 0 * peso ]! !
@@ -870,21 +891,23 @@ signalCanNotAddAccount
 	self error: self class canNotAddAccountErrorMessage! !
 
 
-!Portfolio methodsFor: 'report' stamp: 'MdC 6/14/2022 15:29:04'!
-report: aReport
-
-	aReport managePortfolio: self.! !
-
-
-!Portfolio methodsFor: 'accessing' stamp: 'MdC 6/14/2022 15:49:16'!
+!Portfolio methodsFor: 'accessing' stamp: 'JM 6/14/2022 15:06:40'!
 accounts
 
-	^accounts copy! !
+	^accounts! !
 
-!Portfolio methodsFor: 'accessing' stamp: 'MdC 6/14/2022 15:10:36'!
+!Portfolio methodsFor: 'accessing' stamp: 'JM 6/14/2022 14:58:04'!
 name
 
-	^ name! !
+	^name! !
+
+
+!Portfolio methodsFor: 'report' stamp: 'JM 6/14/2022 15:19:38'!
+report: aReport
+
+	aReport reportPortfolio: self.
+
+	! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -892,27 +915,20 @@ name
 Portfolio class
 	instanceVariableNames: ''!
 
-!Portfolio class methodsFor: 'initialization' stamp: 'MdC 6/14/2022 14:58:57'!
+!Portfolio class methodsFor: 'initialization' stamp: 'JM 6/14/2022 15:09:14'!
 named: aName
 
-	^self new initializeWith: aName! !
+	^self new initializeWithName: aName! !
 
-!Portfolio class methodsFor: 'initialization' stamp: 'MdC 6/14/2022 14:54:06'!
+!Portfolio class methodsFor: 'initialization' stamp: 'JM 6/14/2022 15:14:53'!
 named: aName with: anAccount
 
-	^self new 
-		initializeWith: aName;
-		add: anAccount;
-		yourself! !
+	^self new initializeWithName: aName; add: anAccount; yourself.! !
 
-!Portfolio class methodsFor: 'initialization' stamp: 'MdC 6/14/2022 15:36:22'!
-named: aName with: anAccount with: anotherAccount
+!Portfolio class methodsFor: 'initialization' stamp: 'JM 6/14/2022 16:06:37'!
+named: aName with: anAccount with: anAccount2
 
-	^self new 
-		initializeWith: aName;
-		add: anAccount;
-		add: anotherAccount;
-		yourself! !
+	^self new initializeWithName: aName; add: anAccount; add: anAccount2; yourself.! !
 
 !Portfolio class methodsFor: 'initialization' stamp: 'HAW 5/25/2019 11:18:21'!
 with: anAccount
@@ -943,17 +959,17 @@ Account subclass: #ReceptiveAccount
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros2'!
 
-!ReceptiveAccount methodsFor: 'initialization' stamp: 'MdC 6/14/2022 15:15:22'!
+!ReceptiveAccount methodsFor: 'initialization' stamp: 'HernanWilkinson 7/13/2011 18:35'!
 initialize
 
 	super initialize.
 	transactions := OrderedCollection new.! !
 
-!ReceptiveAccount methodsFor: 'initialization' stamp: 'MdC 6/14/2022 15:15:14'!
-initializeWith: aName
+!ReceptiveAccount methodsFor: 'initialization' stamp: 'JM 6/14/2022 15:10:28'!
+initializeWithName: aName
 
 	name _ aName.
-	self initialize.! !
+! !
 
 
 !ReceptiveAccount methodsFor: 'main protocol' stamp: 'MdC 6/13/2022 21:34:29'!
@@ -987,6 +1003,17 @@ addTransactionsTo: aCollectionOfTransactions
 	aCollectionOfTransactions addAll: transactions ! !
 
 
+!ReceptiveAccount methodsFor: 'accessing' stamp: 'JM 6/14/2022 16:24:44'!
+accounts
+
+! !
+
+!ReceptiveAccount methodsFor: 'accessing' stamp: 'JM 6/14/2022 14:58:11'!
+name
+
+	^name! !
+
+
 !ReceptiveAccount methodsFor: 'composition' stamp: 'HAW 5/25/2019 12:03:32'!
 addedTo: aPortfolio 
 	
@@ -998,21 +1025,10 @@ isComposedBy: anAccount
 	^self = anAccount ! !
 
 
-!ReceptiveAccount methodsFor: 'report' stamp: 'MdC 6/14/2022 15:29:16'!
+!ReceptiveAccount methodsFor: 'report' stamp: 'JM 6/14/2022 15:19:51'!
 report: aReport
 
-	aReport manageReceptiveAccount: self.! !
-
-
-!ReceptiveAccount methodsFor: 'accessing' stamp: 'MdC 6/14/2022 15:49:29'!
-accounts
-
-	^ self! !
-
-!ReceptiveAccount methodsFor: 'accessing' stamp: 'MdC 6/14/2022 15:10:27'!
-name
-
-	^ name! !
+	aReport reportReceptiveAccount: self.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1020,10 +1036,10 @@ name
 ReceptiveAccount class
 	instanceVariableNames: ''!
 
-!ReceptiveAccount class methodsFor: 'initialization' stamp: 'MdC 6/14/2022 14:59:09'!
+!ReceptiveAccount class methodsFor: 'initialization' stamp: 'JM 6/14/2022 15:11:50'!
 named: aName
 
-	^self new initializeWith: aName! !
+	^self new initializeWithName: aName! !
 
 
 !classDefinition: #AccountTransaction category: 'ServiciosFinancieros2'!
@@ -1092,8 +1108,7 @@ for: aValue
 
 	^ self new initializeFor: aValue ! !
 
-
-!Deposit class methodsFor: 'as yet unclassified' stamp: 'LL 7/8/2021 21:45:00'!
+!Deposit class methodsFor: 'instance creation' stamp: 'LL 7/8/2021 21:45:00'!
 register: aValue on: account
 
 	| transaction |
@@ -1128,7 +1143,7 @@ initializeWith: aTransfer
 TransferLeg class
 	instanceVariableNames: ''!
 
-!TransferLeg class methodsFor: 'as yet unclassified' stamp: 'LL 9/20/2020 22:45:01'!
+!TransferLeg class methodsFor: 'instance creation' stamp: 'LL 9/20/2020 22:45:01'!
 of: aTransfer on: anAccount
 
 	| transaction |
@@ -1177,10 +1192,10 @@ depositLeg
 	^transfer depositLeg! !
 
 
-!TransferWithdrawLeg methodsFor: 'balance' stamp: 'LL 9/20/2020 22:27:55'!
+!TransferWithdrawLeg methodsFor: 'balance' stamp: 'JM 6/14/2022 16:46:40'!
 affectBalance: aBalance
 
-	^aBalance - self value! !
+	^aBalance - (self value)! !
 
 
 !TransferWithdrawLeg methodsFor: 'report' stamp: 'MdC 6/13/2022 20:38:17'!
@@ -1230,8 +1245,7 @@ for: aValue
 
 	^ self new initializeFor: aValue ! !
 
-
-!Withdraw class methodsFor: 'as yet unclassified' stamp: 'LL 7/8/2021 21:45:05'!
+!Withdraw class methodsFor: 'instance creation' stamp: 'LL 7/8/2021 21:45:05'!
 register: aValue on: account
 
 	| transaction |
@@ -1255,7 +1269,6 @@ report
 	self subclassResponsibility ! !
 
 
-
 !Report methodsFor: 'initialization' stamp: 'MdC 6/13/2022 20:21:21'!
 initializeWith: anAccount
 
@@ -1267,7 +1280,7 @@ initializeWith: anAccount
 Report class
 	instanceVariableNames: ''!
 
-!Report class methodsFor: 'initialization' stamp: 'MdC 6/13/2022 20:16:50'!
+!Report class methodsFor: 'instance creation' stamp: 'MdC 6/13/2022 20:16:50'!
 initializeWith: anAccount
 
 	^self new initializeWith: anAccount.! !
@@ -1332,45 +1345,41 @@ Report subclass: #PortfolioDetailedTreePrinter
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros2'!
 
-!PortfolioDetailedTreePrinter methodsFor: 'main protocol' stamp: 'MdC 6/14/2022 16:39:07'!
+!PortfolioDetailedTreePrinter methodsFor: 'main protocol' stamp: 'JM 6/14/2022 16:40:08'!
 report
 
 	collection add: account name.
 	
-	account accounts do: [ :anAccount | 
-		anAccount report: self
-		"collection addAll: (anAccount report: self).
-		collection addAll: (anAccount makeReport: PortfolioTreePrinter).
-		collection addAllLast: (anAccount makeReport: AccountSummary)."
-	].
+	account accounts do: [:anAccount | 
+		anAccount report: self].
 	
 	collection add: ('Balance = ' append: (account balance) asString).
+	
 
-	^collection! !
+	^collection.! !
 
 
-!PortfolioDetailedTreePrinter methodsFor: 'account manager' stamp: 'MdC 6/14/2022 16:49:10'!
-managePortfolio: aPortfolio
+!PortfolioDetailedTreePrinter methodsFor: 'transaction manager' stamp: 'JM 6/14/2022 16:49:33'!
+reportPortfolio: aPortfolio
 
 	collection add: aPortfolio name.
 	
-	aPortfolio accounts do: [ :anAccount | (anAccount report: self)].
+	aPortfolio accounts do: [: anAccount | (anAccount report: self)].
 	
 	collection add: ('Balance = ' append: (aPortfolio balance) asString).! !
 
-!PortfolioDetailedTreePrinter methodsFor: 'account manager' stamp: 'MdC 6/14/2022 16:30:26'!
-manageReceptiveAccount: anAccount
+!PortfolioDetailedTreePrinter methodsFor: 'transaction manager' stamp: 'JM 6/14/2022 16:43:58'!
+reportReceptiveAccount: anAccount
 
 	collection add: (anAccount name).
 	
-	collection addAllLast: (anAccount makeReport: AccountSummary).
-! !
+	collection addAllLast: (anAccount makeReport: AccountSummary).! !
 
 
-!PortfolioDetailedTreePrinter methodsFor: 'initialization' stamp: 'MdC 6/14/2022 15:48:14'!
-initializeWith: anAcount
+!PortfolioDetailedTreePrinter methodsFor: 'initialization' stamp: 'JM 6/14/2022 15:35:49'!
+initializeWith: anAccount
 
-	account _ anAcount.
+	account _ anAccount.
 	collection _ OrderedCollection new.
 ! !
 
@@ -1382,35 +1391,34 @@ Report subclass: #PortfolioTreePrinter
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros2'!
 
-!PortfolioTreePrinter methodsFor: 'main protocol' stamp: 'MdC 6/14/2022 15:33:54'!
+!PortfolioTreePrinter methodsFor: 'main protocol' stamp: 'JM 6/14/2022 16:24:58'!
 report
-
-	collection add: account name.
 	
-	account accounts do: [ :anAccount | anAccount report: self].
+	collection add: account name.
 
-	^ collection! !
+	(account isKindOf: Portfolio) ifTrue:  [account accounts do: [:anAccount | anAccount report: self]].
+	
+	^collection! !
 
 
-!PortfolioTreePrinter methodsFor: 'account manager' stamp: 'MdC 6/14/2022 15:34:53'!
-managePortfolio: aPortfolio
+!PortfolioTreePrinter methodsFor: 'transaction manager' stamp: 'JM 6/14/2022 15:26:07'!
+reportPortfolio: aPortfolio
 
 	collection add: aPortfolio name.
-	
-	aPortfolio accounts do: [ :anAccount | collection add: (anAccount name)].! !
 
-!PortfolioTreePrinter methodsFor: 'account manager' stamp: 'MdC 6/14/2022 15:34:16'!
-manageReceptiveAccount: anAccount
+	aPortfolio accounts do: [:anAccount | collection add: anAccount name].! !
 
-	collection add: (anAccount name).
-! !
+!PortfolioTreePrinter methodsFor: 'transaction manager' stamp: 'JM 6/14/2022 15:24:45'!
+reportReceptiveAccount: aReceptiveAccount
+
+	collection add: (aReceptiveAccount name).! !
 
 
-!PortfolioTreePrinter methodsFor: 'initialization' stamp: 'MdC 6/14/2022 15:33:55'!
-initializeWith: anAcount
-
-	account _ anAcount.
+!PortfolioTreePrinter methodsFor: 'initialization' stamp: 'JM 6/14/2022 15:24:05'!
+initializeWith: anAccount
 	collection _ OrderedCollection new.
+	account _ anAccount.
+
 ! !
 
 
